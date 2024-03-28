@@ -33,15 +33,19 @@ class ScrapeLatestArticle extends Command
 
         if ($response->getStatusCode() == 200) {
             $html = $response->getBody()->getContents();
-            dd($html);
             $crawler = new Crawler($html);
-            dd($crawler);
-            $articleTitle = $crawler->filter('.elementor-post__title')->text();
-            $articleBody = $crawler->filter('.elementor-post__content > p')->text();
+            $title = $crawler->filter('.elementor-post__title > a')->text();
+            $body = $crawler->filter('.elementor-post__excerpt > p')->text();
 
-            $this->info("Latest Article: $articleTitle");
-            $this->info("Article Body: $articleBody");
-            // You can further process the data, such as saving it to the database
+            $this->info("Latest Article: $title");
+            $this->info("Article Body: $body");
+
+            \App\Models\Article::create([
+                'title' => $title,
+                'body' => $body,
+            ]);
         }
+
+        $this->info('Scraping completed!');
     }
 }
