@@ -1,8 +1,31 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use App\Console\Commands\ScrapeLatestArticle;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote')->hourly();
+// Sunday to Thursday bween 18:30 and 19:30 every 5 minutes
+Schedule::command(ScrapeLatestArticle::class)
+    ->sundays()
+    ->between('18:30', '19:30')
+    ->everyFiveMinutes();
+
+Schedule::command(ScrapeLatestArticle::class)
+    ->mondays()
+    ->between('18:30', '19:30')
+    ->everyFiveMinutes();
+
+Schedule::command(ScrapeLatestArticle::class)
+    ->tuesdays()
+    ->between('18:30', '19:30')
+    ->everyFiveMinutes();
+
+Schedule::command(ScrapeLatestArticle::class)
+    ->wednesdays()
+    ->between('18:30', '19:30')
+    ->everyFiveMinutes();
+
+Schedule::command(ScrapeLatestArticle::class)
+    ->thursdays()
+    ->between('18:30', '19:30')
+    ->everyFiveMinutes();
+
