@@ -4,9 +4,9 @@ namespace App\Console\Commands;
 
 use App\Jobs\NewArticlePosted;
 use App\Models\Article;
-use Illuminate\Console\Command;
+use App\Services\ParserService;
 use GuzzleHttp\Client;
-use Symfony\Component\DomCrawler\Crawler;
+use Illuminate\Console\Command;
 
 class ScrapeLatestArticle extends Command
 {
@@ -27,11 +27,12 @@ class ScrapeLatestArticle extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(ParserService $parserService): void
     {
-        $todaysArticle = Article::whereDate('created_at', today())->first();
-        if ($todaysArticle) {
+        $latestArticle = Article::whereDate('created_at', today())->first();
+        if ($latestArticle) {
             $this->info('Today\'s article has already been scraped!');
+
             return;
         }
 
@@ -41,17 +42,13 @@ class ScrapeLatestArticle extends Command
 
         if ($response->getStatusCode() == 200) {
             $html = $response->getBody()->getContents();
-            $crawler = new Crawler($html);
-            $title = $crawler->filter('.elementor-post__title > a')->text();
-            $body = $crawler->filter('.elementor-post__excerpt > p')->text();
 
-            $this->info("Latest Article: $title");
-            $this->info("Article Body: $body");
+            $article = $parserService->parse($html);
+            if (! $article) {
+                $this->error('Failed to parse the article');
 
-            $article = Article::create([
-                'title' => $title,
-                'body' => $body,
-            ]);
+                return;
+            }
 
             NewArticlePosted::dispatch($article);
         }

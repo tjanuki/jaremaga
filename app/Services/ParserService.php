@@ -3,17 +3,26 @@
 namespace App\Services;
 
 use App\Models\Article;
-use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ParserService
 {
-    public function parse(string $html) : string
+    public function parse(string $html): Article
     {
         $crawler = new Crawler($html);
+        if ($crawler->filter('.elementor-post__title > a')->count() == 0) {
+            throw new \Exception('Title not found');
+        }
         $articleTitle = $crawler->filter('.elementor-post__title > a')->text();
+
+        if ($crawler->filter('.elementor-post__excerpt > p')->count() == 0) {
+            throw new \Exception('Body not found');
+        }
         $articleBody = $crawler->filter('.elementor-post__excerpt > p')->text();
 
-        dd($articleTitle, $articleBody);
+        return Article::create([
+            'title' => $articleTitle,
+            'body' => $articleBody,
+        ]);
     }
 }
