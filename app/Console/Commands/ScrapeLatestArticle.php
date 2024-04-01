@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\NewArticlePosted;
 use App\Models\Article;
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
@@ -52,6 +53,7 @@ class ScrapeLatestArticle extends Command
                 'body' => $body,
             ]);
 
+            NewArticlePosted::dispatch($article);
         }
 
         $this->info('Scraping completed!');
