@@ -1,31 +1,10 @@
 <?php
 
-use App\Console\Commands\ScrapeLatestArticle;
-use Illuminate\Support\Facades\Schedule;
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades;
 
-// Sunday to Thursday bween 18:30 and 19:30 every 5 minutes
-Schedule::command(ScrapeLatestArticle::class)
-    ->sundays()
+Facades\Schedule::command('app:scrape-latest-article')
+    ->timezone('America/Toronto')
     ->between('18:30', '19:30')
-    ->everyFiveMinutes();
-
-Schedule::command(ScrapeLatestArticle::class)
-    ->mondays()
-    ->between('18:30', '19:30')
-    ->everyFiveMinutes();
-
-Schedule::command(ScrapeLatestArticle::class)
-    ->tuesdays()
-    ->between('18:30', '19:30')
-    ->everyFiveMinutes();
-
-Schedule::command(ScrapeLatestArticle::class)
-    ->wednesdays()
-    ->between('18:30', '19:30')
-    ->everyFiveMinutes();
-
-Schedule::command(ScrapeLatestArticle::class)
-    ->thursdays()
-    ->between('18:30', '19:30')
-    ->everyFiveMinutes();
-
+    ->everyFiveMinutes()
+    ->days([Schedule::SUNDAY, Schedule::MONDAY, Schedule::TUESDAY, Schedule::WEDNESDAY, Schedule::THURSDAY]);

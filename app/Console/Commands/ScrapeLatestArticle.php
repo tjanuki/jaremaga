@@ -31,7 +31,7 @@ class ScrapeLatestArticle extends Command
     {
         $latestArticle = Article::whereDate('created_at', today())->first();
         if ($latestArticle) {
-            $this->info('Today\'s article has already been scraped!');
+            logger()->info('Today\'s article has already been scraped!');
 
             return;
         }
@@ -45,6 +45,7 @@ class ScrapeLatestArticle extends Command
 
             $article = $parserService->parse($html);
             if (! $article) {
+                logger()->error('Failed to parse the article');
                 $this->error('Failed to parse the article');
 
                 return;
@@ -53,6 +54,7 @@ class ScrapeLatestArticle extends Command
             NewArticlePosted::dispatch($article);
         }
 
+        logger()->info('Scraping completed!');
         $this->info('Scraping completed!');
     }
 }

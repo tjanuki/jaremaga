@@ -7,7 +7,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ParserService
 {
-    public function parse(string $html): Article
+    public function parse(string $html): ?Article
     {
         $crawler = new Crawler($html);
         if ($crawler->filter('.elementor-post__title > a')->count() == 0) {
