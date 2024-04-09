@@ -7,6 +7,9 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ParserService
 {
+
+    const READERS_CORNER = 'Readers’ Corner: ';
+
     public function parse(string $html): ?Article
     {
         $crawler = new Crawler($html);
@@ -24,5 +27,25 @@ class ParserService
             'title' => $articleTitle,
             'body' => $articleBody,
         ]);
+    }
+
+    public function removeWordCount(string $body) : string
+    {
+        return preg_replace('/\s*（\d+ words）/', '', $body);
+    }
+
+    public function addTitleCorner(string $title) : string
+    {
+        // if title is starts with 'Readers’ Corner: ', return title
+        if (str_starts_with($title, self::READERS_CORNER)) {
+            return $title;
+        }
+
+        // if today is Thursday, add 'Readers’ Corner: ' to the title
+        if (today()->isThursday()) {
+            return self::READERS_CORNER . $title;
+        }
+
+        return $title;
     }
 }

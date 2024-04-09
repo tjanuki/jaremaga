@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 it('parse title and body from a html', function () {
 
     $html = <<<'HTML'
@@ -36,4 +38,34 @@ HTML;
     expect($article)->not()->toBeNull()
         ->and($article->title)->toBe('some title')
         ->and($article->body)->toBe('some body here');
+});
+
+it('removes word count from body', function () {
+    $body = 'Many children find the first day of school exciting but sometimes a little frightening. （116 words）';
+
+    $body = app(\App\Services\ParserService::class)->removeWordCount($body);
+
+    // prettier-ignore
+    expect($body)->toBe('Many children find the first day of school exciting but sometimes a little frightening.');
+});
+
+it('adds Readers corner if the date is thursday', function () {
+
+    $title = 'some title';
+
+    $this->travelTo(Carbon::create(2024, 3, 28)); // Tuesday
+    $title = app(\App\Services\ParserService::class)->addTitleCorner($title);
+
+    // prettier-ignore
+    expect($title)->toBe('Readers’ Corner: some title');
+});
+
+it('adds nothing if the title already starts with Readers corner', function () {
+    $title = 'Readers’ Corner: some title';
+
+    $this->travelTo(Carbon::create(2024, 3, 28)); // Tuesday
+    $title = app(\App\Services\ParserService::class)->addTitleCorner($title);
+
+    // prettier-ignore
+    expect($title)->toBe('Readers’ Corner: some title');
 });
