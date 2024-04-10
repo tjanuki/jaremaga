@@ -24,8 +24,8 @@ class ParserService
         $articleBody = $crawler->filter('.elementor-post__excerpt > p')->text();
 
         return Article::create([
-            'title' => $articleTitle,
-            'body' => $articleBody,
+            'title' => $this->addTitleCorner($articleTitle),
+            'body' => $this->removeWordCount($articleBody),
         ]);
     }
 
