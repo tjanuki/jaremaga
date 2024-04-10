@@ -31,7 +31,9 @@ class ParserService
 
     public function removeWordCount(string $body) : string
     {
-        return preg_replace('/\s*（\d+ words）/', '', $body);
+        $body =  preg_replace('/\s*（\d+ words）/', '', $body);
+
+        return preg_replace('/\s*\(\d+ words\)/', '', $body);
     }
 
     public function addTitleCorner(string $title) : string

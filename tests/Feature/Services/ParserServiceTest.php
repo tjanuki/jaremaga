@@ -49,6 +49,16 @@ it('removes word count from body', function () {
     expect($body)->toBe('Many children find the first day of school exciting but sometimes a little frightening.');
 });
 
+it('removes word counts from body', function () {
+    $body = 'Many children find the first day of school exciting but sometimes a little frightening. (120 words)';
+
+    $body = app(\App\Services\ParserService::class)->removeWordCount($body);
+
+    // prettier-ignore
+    expect($body)->toBe('Many children find the first day of school exciting but sometimes a little frightening.');
+});
+
+
 it('adds Readers corner if the date is thursday', function () {
 
     $title = 'some title';
