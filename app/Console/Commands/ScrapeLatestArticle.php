@@ -31,8 +31,6 @@ class ScrapeLatestArticle extends Command
     {
         $latestArticle = Article::whereDate('created_at', today())->first();
         if ($latestArticle) {
-            logger()->info('Today\'s article has already been scraped!');
-
             return;
         }
 
