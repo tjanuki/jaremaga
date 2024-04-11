@@ -39,7 +39,7 @@ class ParserService
     public function addTitleCorner(string $title) : string
     {
         // if title is starts with 'Readers’ Corner: ', return title
-        if (str_starts_with($title, self::READERS_CORNER)) {
+        if (str_starts_with($title, 'Reader')) {
             return $title;
         }
 

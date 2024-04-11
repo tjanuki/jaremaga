@@ -32,6 +32,7 @@ No Comments</span>
 </div>
 HTML;
 
+    $this->travelTo(Carbon::create(2024, 3, 31));
     $article = app(\App\Services\ParserService::class)->parse($html);
 
     // prettier-ignore
