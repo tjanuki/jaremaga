@@ -10,6 +10,9 @@ class ParserService
 
     const READERS_CORNER = 'Readers’ Corner: ';
 
+    /**
+     * @throws \Exception
+     */
     public function parse(string $html): ?Article
     {
         $crawler = new Crawler($html);
@@ -17,6 +20,10 @@ class ParserService
             throw new \Exception('Title not found');
         }
         $articleTitle = $crawler->filter('.elementor-post__title > a')->text();
+        // check duplicate title
+        if (Article::where('title', 'like', $articleTitle)->exists()) {
+            throw new \Exception('Title already exists');
+        }
 
         if ($crawler->filter('.elementor-post__excerpt > p')->count() == 0) {
             throw new \Exception('Body not found');

@@ -52,7 +52,9 @@ class ScrapeLatestArticle extends Command
             NewArticlePosted::dispatch($article);
         }
 
-        logger()->info('Scraping completed!');
+        logger()->info('Scraping completed!', [
+            'title' => $article->title ?? 'N/A',
+        ]);
         $this->info('Scraping completed!');
     }
 }
