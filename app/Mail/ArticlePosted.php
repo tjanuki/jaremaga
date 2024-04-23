@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\Article;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -28,7 +27,7 @@ class ArticlePosted extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Jareamaga: "'.$this->article->title.'"',
+            subject: "Jareamaga: {$this->article->title}",
         );
     }
 
