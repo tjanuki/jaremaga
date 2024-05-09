@@ -33,7 +33,9 @@ class NewArticlePosted implements ShouldQueue
             ->each(function (Subscriber $subscriber) {
                 Mail::to($subscriber->email)
                     ->send(new ArticlePosted($this->article));
-                logger()->info("Email sent to $subscriber->email");
+                logger()->info("Email sent to $subscriber->email", [
+                    'title' => $this->article?->title ?? 'No title provided',
+                ] );
             });
     }
 }

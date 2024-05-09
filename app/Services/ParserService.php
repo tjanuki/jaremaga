@@ -19,6 +19,7 @@ class ParserService
         if ($crawler->filter('.elementor-post__title > a')->count() == 0) {
             throw new \Exception('Title not found');
         }
+
         $articleTitle = $crawler->filter('.elementor-post__title > a')->text();
         // check duplicate title
         if (Article::where('title', 'like', '%' . $articleTitle . '%')->exists()) {
