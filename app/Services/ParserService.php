@@ -39,9 +39,11 @@ class ParserService
 
     public function removeWordCount(string $body) : string
     {
-        $body =  preg_replace('/\s*（\d+ words）/', '', $body);
+        // Remove full-width parenthesis format (Japanese style) with any number of spaces
+        $body = preg_replace('/\s*（\d+\s+words）/u', '', $body);
 
-        return preg_replace('/\s*\(\d+ words\)/', '', $body);
+        // Remove half-width parenthesis format (Standard English style) with any number of spaces
+        return preg_replace('/\s*\(\d+\s+words\)/', '', $body);
     }
 
     public function addTitleCorner(string $title) : string
