@@ -68,6 +68,14 @@ it('removes word counts from body for other article', function () {
     expect($body)->toBe('They’re great!');
 });
 
+it('removes word counts from body for other pattern', function () {
+    $body = 'made of metal.（124 words)';
+
+    $body = app(\App\Services\ParserService::class)->removeWordCount($body);
+
+    // prettier-ignore
+    expect($body)->toBe('made of metal.');
+});
 
 it('adds Readers corner if the date is thursday', function () {
 

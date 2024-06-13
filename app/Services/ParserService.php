@@ -39,6 +39,10 @@ class ParserService
 
     public function removeWordCount(string $body) : string
     {
+        // normalise the parenthesis format
+        $body = str_replace('（', '(', $body);
+        $body = str_replace('）', ')', $body);
+
         // Remove full-width parenthesis format (Japanese style) with any number of spaces
         $body = preg_replace('/\s*（\d+\s+words）/u', '', $body);
 
