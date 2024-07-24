@@ -77,6 +77,15 @@ it('removes word counts from body for other pattern', function () {
     expect($body)->toBe('made of metal.');
 });
 
+it('removes word counts from body for another pattern', function () {
+    $body = 'They make noise to attract female cicadas.   (114 words )';
+
+    $body = app(\App\Services\ParserService::class)->removeWordCount($body);
+
+    // prettier-ignore
+    expect($body)->toBe('They make noise to attract female cicadas.');
+});
+
 it('adds Readers corner if the date is thursday', function () {
 
     $title = 'some title';
