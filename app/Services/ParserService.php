@@ -20,7 +20,7 @@ class ParserService
             throw new \Exception('Title not found');
         }
 
-        $articleTitle = $crawler->filter('.elementor-post__title > a')->text();
+        $articleTitle = trim($crawler->filter('.elementor-post__title > a')->text());
         // check duplicate title
         if (Article::where('title', 'like', '%' . $articleTitle . '%')->exists()) {
             throw new \Exception('Title already exists');
@@ -49,8 +49,8 @@ class ParserService
     public function addTitleCorner(string $title) : string
     {
         // if title is starts with 'Readers’ Corner: ', return title
-        if (str_starts_with(trim($title), 'Reader')) {
-            return trim($title);
+        if (str_starts_with($title, 'Reader')) {
+            return $title;
         }
 
         // if today is Thursday, add 'Readers’ Corner: ' to the title
