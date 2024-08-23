@@ -107,6 +107,16 @@ it('adds nothing if the title already starts with Readers corner', function () {
     expect($title)->toBe('Readers’ Corner: some title');
 });
 
+it('adds nothing if the tile already starts with Readers corner', function () {
+    $title = ' Readers’ Corner: Polite Tokyoites（This story was sent to me in May）';
+
+    $this->travelTo(Carbon::create(2024, 3, 28)); // Tuesday
+    $title = app(\App\Services\ParserService::class)->addTitleCorner($title);
+
+    // prettier-ignore
+    expect($title)->toBe('Readers’ Corner: Polite Tokyoites（This story was sent to me in May）');
+});
+
 it('doesnt send as new article if same title exists with Readers corner', function () {
 
     \App\Models\Article::query()->create([
