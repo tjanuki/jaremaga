@@ -163,3 +163,11 @@ HTML;
     // prettier-ignore
     expect($article)->toBeNull();
 });
+
+it('removes email invitation from body', function () {
+    $body = 'Ten years ago, I wrote about one of the oldest sweet shops in Japan. You can send me your comments or stories at jaremaga@gmail.com';
+
+    $body = app(\App\Services\ParserService::class)->removeEmailSignature($body);
+
+    expect($body)->toBe('Ten years ago, I wrote about one of the oldest sweet shops in Japan.');
+});

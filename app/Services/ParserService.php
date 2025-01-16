@@ -30,10 +30,12 @@ class ParserService
             throw new \Exception('Body not found');
         }
         $articleBody = $crawler->filter('.elementor-post__excerpt > p')->text();
+        $body = $this->removeWordCount($articleBody);
+        $body = $this->removeEmailSignature($body);
 
         return Article::create([
             'title' => $this->addTitleCorner($articleTitle),
-            'body' => $this->removeWordCount($articleBody),
+            'body' => $body,
         ]);
     }
 
@@ -59,5 +61,10 @@ class ParserService
         }
 
         return $title;
+    }
+
+    public function removeEmailSignature(string $body): string
+    {
+        return preg_replace('/\s*You can send me your comments or stories at jaremaga@gmail\.com\s*/', '', $body);
     }
 }
