@@ -65,6 +65,16 @@ class ParserService
 
     public function removeEmailSignature(string $body): string
     {
-        return preg_replace('/\s*You can send me your comments or stories at jaremaga@gmail\.com\s*/', '', $body);
+        // Split into sentences (handling multiple types of punctuation)
+        $sentences = preg_split('/(?<=[.!?])\s+/', trim($body));
+
+        // If we have at least one sentence and the last one contains the email
+        if (count($sentences) > 0 && str_contains(end($sentences), 'jaremaga@gmail.com')) {
+            // Remove the last sentence and join the rest
+            array_pop($sentences);
+        }
+
+        // Join sentences back together with a space after each punctuation
+        return implode(' ', $sentences);
     }
 }
