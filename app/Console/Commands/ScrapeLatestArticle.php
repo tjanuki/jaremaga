@@ -43,8 +43,7 @@ class ScrapeLatestArticle extends Command
 
             $article = $parserService->parse($html);
             if (! $article) {
-                logger()->error('Failed to parse the article');
-                $this->error('Failed to parse the article');
+                $this->info('No new article found.');
 
                 return;
             }

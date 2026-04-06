@@ -23,7 +23,7 @@ class ParserService
         $articleTitle = trim($crawler->filter('.elementor-post__title > a')->text());
         // check duplicate title
         if (Article::where('title', 'like', '%' . $articleTitle . '%')->exists()) {
-            throw new \Exception('Title already exists');
+            return null;
         }
 
         if ($crawler->filter('.elementor-post__excerpt > p')->count() == 0) {
